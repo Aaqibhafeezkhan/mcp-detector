@@ -33,17 +33,21 @@ Click **Scan the unsafe example** to see what a report looks like. It touches no
 
 ## For developers
 
-> **Not on npm yet.** Until the first release, run it from a clone (below). The `npx mcp-detector …` and `npm install -g mcp-detector` forms in this README work once it is published.
+Requires Node.js 22.12 or newer. No install needed:
 
 ```bash
-git clone https://github.com/adebayomoses/mcp-detector.git
-cd mcp-detector
-npm install
-npm run app                  # builds, then opens the web app
-npm run build && node dist/cli/index.js scan -- npx -y @modelcontextprotocol/server-everything
+npx mcp-detector demo                       # see a report for a built-in unsafe example
+npx mcp-detector ui                         # the web app
+npx mcp-detector scan -- npx -y @modelcontextprotocol/server-everything
 ```
 
-`npm link` (after `npm run build`) makes the `mcp-detector` command available everywhere, which is what the examples below use.
+Or install it once, so the `mcp-detector` command is available everywhere (which is what the examples below use):
+
+```bash
+npm install -g mcp-detector
+```
+
+To work on MCP Detector itself, run it from a clone: `git clone https://github.com/adebayomoses/mcp-detector.git`, then `npm install` and `npm run app`.
 
 Point it at an MCP server and get protocol checks, tool and schema analysis, security indicators, performance numbers and a health score, with a concrete fix for every finding. Example terminal output:
 
@@ -97,15 +101,11 @@ All 32 rules are documented in [docs/rules.md](docs/rules.md) (what, why, how to
 
 ## Install
 
-From a clone (works today): see **For developers** above, then `npm link` to get the `mcp-detector` command.
-
-Once published to npm:
-
 ```bash
-npm install -g mcp-detector     # or: npx mcp-detector ...
+npm install -g mcp-detector     # or run without installing: npx mcp-detector ...
 ```
 
-Requires Node.js 22.12 or newer.
+Requires Node.js 22.12 or newer. To run from a clone instead, see **For developers** above.
 
 ## Usage
 
@@ -201,7 +201,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: npm ci && npm run build
-      - uses: adebayomoses/mcp-detector@v1
+      - uses: adebayomoses/mcp-detector@v0
         with:
           server-command: node build/index.js
           fail-on: high

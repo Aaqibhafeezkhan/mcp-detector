@@ -23,7 +23,7 @@ npm run docs:rules && git diff --exit-code docs/rules.md
 
 - [ ] **Claim the npm name now** (it can be taken any day). Log in (`npm login`, with 2FA) and either publish 0.1.0 or `npm publish --dry-run` to confirm access. Consider the `@your-scope/mcp-detector` fallback if the name is gone.
 - [ ] **Create the GitHub repository** and choose the owner. The docs use `adebayomoses/mcp-detector`. **Rename the GitHub repo from `MCP-Doctor` to `mcp-detector`** (Settings → General → Repository name; GitHub redirects the old URL). Then check these places still match:
-  `README.md`, `docs/integrations.md`, `action.yml` usage examples (`uses: adebayomoses/mcp-detector@v1`), `CHANGELOG.md`.
+  `README.md`, `docs/integrations.md`, `action.yml` usage examples (`uses: adebayomoses/mcp-detector@v0`), `CHANGELOG.md`.
 - [x] `package.json` has `repository`, `homepage` and `bugs` (npm provenance requires `repository.url` to match the repo that publishes). **Still yours to add:** `"author": "Your Name <you@example.com>"`. It is left out on purpose because it would publish your name and email.
 - [ ] **License holder.** `LICENSE` says "MCP Detector contributors" (MIT). Change it if you want your name or organisation there.
 - [ ] **Security contact.** `SECURITY.md` and `CODE_OF_CONDUCT.md` point to GitHub's private vulnerability reporting. Enable it (Settings → Code security → Private vulnerability reporting) and add a contact address for conduct reports.
@@ -43,7 +43,8 @@ Everything that could be prepared without your accounts is done: single name, `a
    `bash scripts/setup-github.sh all`
 5. **Set up npm.** Create an automation token and add it as the `NPM_TOKEN` repository secret. To claim the name immediately instead, run `npm login` then `npm publish --access public` (the publish gate runs typecheck, all tests and the build).
 6. **Add your `author`** to `package.json`, and set the release date in `CHANGELOG.md`.
-7. **Tag the release.** `git tag v0.1.0 && git push origin v0.1.0`. The Release workflow publishes to npm with provenance, creates the GitHub release from `docs/release-notes/v0.1.0.md`, and moves the `v1` tag.
+7. **Tag the release.** `git tag v0.1.0 && git push origin v0.1.0`. The Release workflow publishes to npm with provenance, creates the GitHub release from `docs/release-notes/v0.1.0.md`, and moves the floating major tag (`v0` for every 0.x release; it becomes `v1` at 1.0.0).
+   > **npm may hold CI publishes for your approval ("staged publishing").** If the workflow is green but `npm view mcp-detector version` still shows `0.0.0-stage` (a placeholder), the real version is waiting. Approve it on npmjs.com (check the package page and the email npm sent you). Until then `npx mcp-detector` and the GitHub Action will not work, because the `latest` version is the placeholder.
 8. **List the Action on the Marketplace.** Repository → Releases → edit the v0.1.0 release → tick *Publish this Action to the GitHub Marketplace* (you must accept the Marketplace agreement and have 2FA on). The action name in `action.yml` ("MCP Detector") must be unique on the Marketplace; change `name:` there if it is taken.
 9. **Verify as a stranger** (section 5 below), then follow the announcement plan.
 
@@ -65,7 +66,7 @@ The README leads with a no-code path (`docs/for-beginners.md`, `start-app.bat`, 
 - [ ] **Try the Windows path on a machine without Node.js** and with an old Node.js to see the guidance messages, and note the exact SmartScreen wording.
 - [ ] Download the ZIP from GitHub (not your working folder) and follow `docs/for-beginners.md` as a stranger would. Fix anything unclear.
 - [ ] Refresh the screenshots in `docs/images/` if the app's look changes.
-- [ ] **When the package is on npm:** remove the "Not on npm yet" notes in `README.md` and `docs/getting-started.md`, and make `npx mcp-detector` the first suggestion for developers.
+- [x] **Done 2026-10-13:** the package is on npm (0.1.0, with provenance) and the "Not on npm yet" notes are removed from `README.md` and `docs/getting-started.md`.
 
 ## 3. Broaden the false-positive check (recommended before announcing)
 
@@ -89,7 +90,7 @@ git tag v0.1.0
 git push origin main v0.1.0
 ```
 
-The workflow (`.github/workflows/release.yml`) checks the tag matches `package.json`, runs typecheck, tests, build and the docs check, publishes to npm with provenance, creates the GitHub release with generated notes, and moves the floating `v1` tag that `uses: adebayomoses/mcp-detector@v1` refers to.
+The workflow (`.github/workflows/release.yml`) checks the tag matches `package.json`, runs typecheck, tests, build and the docs check, publishes to npm with provenance, creates the GitHub release with generated notes, and moves the floating major tag that `uses: adebayomoses/mcp-detector@v0` refers to (`v0` while the version is 0.x, `v1` from 1.0.0; update the docs when you reach 1.0).
 
 To publish by hand instead: `npm publish --access public` (the `prepack`/`prepublishOnly` scripts build and test first).
 
@@ -110,7 +111,7 @@ To publish by hand instead: `npm publish --access public` (the `prepack`/`prepub
 ## Rollback
 
 - Published a bad version: `npm deprecate mcp-detector@0.1.0 "use 0.1.1"`, then publish the fix. `npm unpublish` is only allowed for 72 hours and breaks anyone who installed it, so prefer deprecating.
-- Bad `v1` Action tag: re-point it (`git tag -f v1 <good-sha> && git push -f origin v1`).
+- Bad floating Action tag: re-point it (`git tag -f v0 <good-sha> && git push -f origin v0`).
 
 ## Versioning
 

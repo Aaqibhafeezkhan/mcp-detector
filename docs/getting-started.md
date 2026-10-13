@@ -4,7 +4,15 @@
 
 ## 1. Install
 
-Requires Node.js 22.12 or newer. **From a clone (works today):**
+Requires Node.js 22.12 or newer.
+
+```bash
+npm install -g mcp-detector
+# or run without installing:
+npx mcp-detector --help
+```
+
+To work on MCP Detector itself, run it from a clone instead:
 
 ```bash
 git clone https://github.com/adebayomoses/mcp-detector.git
@@ -12,14 +20,6 @@ cd mcp-detector
 npm install
 npm run build
 npm link            # makes the `mcp-detector` command available everywhere
-```
-
-**Once the package is published to npm:**
-
-```bash
-npm install -g mcp-detector
-# or run without installing:
-npx mcp-detector --help
 ```
 
 ## 1b. Easiest start: the web app or the demo

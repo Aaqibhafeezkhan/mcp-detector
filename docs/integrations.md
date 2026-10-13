@@ -17,7 +17,7 @@ jobs:
         with: { node-version: 22 }
       - run: npm ci && npm run build
 
-      - uses: adebayomoses/mcp-detector@v1
+      - uses: adebayomoses/mcp-detector@v0
         with:
           server-command: node build/index.js
           fail-on: high
@@ -100,3 +100,5 @@ import { runScan, defaultConfig, registerRule } from "mcp-detector";
 ```
 
 Custom rules registered with `registerRule()` before `runScan()` run alongside the built-in ones.
+
+> **About the version in `@v0`.** The floating tag follows the major version. While MCP Detector is 0.x it is `v0` (it moves with every 0.x release); from 1.0.0 it will be `v1`. To pin exactly, use a full tag such as `@v0.1.0`.
