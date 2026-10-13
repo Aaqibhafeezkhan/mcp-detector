@@ -22,20 +22,30 @@ npm run docs:rules && git diff --exit-code docs/rules.md
 ## 1. Decisions and setup (you)
 
 - [ ] **Claim the npm name now** (it can be taken any day). Log in (`npm login`, with 2FA) and either publish 0.1.0 or `npm publish --dry-run` to confirm access. Consider the `@your-scope/mcp-detector` fallback if the name is gone.
-- [ ] **Create the GitHub repository** and choose the owner. The docs assume `mcp-detector/mcp-detector`; search for that string and replace it:
-  `README.md`, `docs/integrations.md`, `github-action/action.yml` usage examples, `CHANGELOG.md`.
-- [ ] **Fill in `package.json`** (npm provenance requires `repository.url` to match the repo that publishes):
-
-  ```json
-  "repository": { "type": "git", "url": "git+https://github.com/OWNER/mcp-detector.git" },
-  "homepage": "https://github.com/OWNER/mcp-detector#readme",
-  "bugs": { "url": "https://github.com/OWNER/mcp-detector/issues" },
-  "author": "Your Name <you@example.com>"
-  ```
+- [ ] **Create the GitHub repository** and choose the owner. The docs use `adebayomoses/mcp-detector`. **Rename the GitHub repo from `MCP-Doctor` to `mcp-detector`** (Settings → General → Repository name; GitHub redirects the old URL). Then check these places still match:
+  `README.md`, `docs/integrations.md`, `action.yml` usage examples (`uses: adebayomoses/mcp-detector@v1`), `CHANGELOG.md`.
+- [x] `package.json` has `repository`, `homepage` and `bugs` (npm provenance requires `repository.url` to match the repo that publishes). **Still yours to add:** `"author": "Your Name <you@example.com>"`. It is left out on purpose because it would publish your name and email.
 - [ ] **License holder.** `LICENSE` says "MCP Detector contributors" (MIT). Change it if you want your name or organisation there.
 - [ ] **Security contact.** `SECURITY.md` and `CODE_OF_CONDUCT.md` point to GitHub's private vulnerability reporting. Enable it (Settings → Code security → Private vulnerability reporting) and add a contact address for conduct reports.
 - [ ] **npm token.** Create an automation token (or configure npm trusted publishing) and add it to the repository as the `NPM_TOKEN` secret.
 - [ ] **Branch protection** on `main`: require the CI workflow to pass.
+
+## 1b. Launch sequence (do these in order)
+
+Everything that could be prepared without your accounts is done: single name, `action.yml` at the root, publish dry-run passing, demo animation, release notes, issue templates, labels and good-first-issue drafts.
+
+1. **Rename the repo** on GitHub to `mcp-detector` (Settings → General → Repository name), then point your local copy at it:
+   `git remote set-url origin https://github.com/adebayomoses/mcp-detector.git`
+2. **Mark the Mac launcher executable** (so a downloaded ZIP runs it):
+   `git update-index --add --chmod=+x start-app.command`
+3. **Commit and push**, then watch the Actions tab until CI is green on Ubuntu and Windows. Fix anything it finds before going further.
+4. **Create the labels and good-first issues** (needs the GitHub CLI, `gh auth login` first):
+   `bash scripts/setup-github.sh all`
+5. **Set up npm.** Create an automation token and add it as the `NPM_TOKEN` repository secret. To claim the name immediately instead, run `npm login` then `npm publish --access public` (the publish gate runs typecheck, all tests and the build).
+6. **Add your `author`** to `package.json`, and set the release date in `CHANGELOG.md`.
+7. **Tag the release.** `git tag v0.1.0 && git push origin v0.1.0`. The Release workflow publishes to npm with provenance, creates the GitHub release from `docs/release-notes/v0.1.0.md`, and moves the `v1` tag.
+8. **List the Action on the Marketplace.** Repository → Releases → edit the v0.1.0 release → tick *Publish this Action to the GitHub Marketplace* (you must accept the Marketplace agreement and have 2FA on). The action name in `action.yml` ("MCP Detector") must be unique on the Marketplace; change `name:` there if it is taken.
+9. **Verify as a stranger** (section 5 below), then follow the announcement plan.
 
 ## 2. Pre-release (first push)
 
@@ -79,7 +89,7 @@ git tag v0.1.0
 git push origin main v0.1.0
 ```
 
-The workflow (`.github/workflows/release.yml`) checks the tag matches `package.json`, runs typecheck, tests, build and the docs check, publishes to npm with provenance, creates the GitHub release with generated notes, and moves the floating `v1` tag that `uses: OWNER/mcp-detector/github-action@v1` refers to.
+The workflow (`.github/workflows/release.yml`) checks the tag matches `package.json`, runs typecheck, tests, build and the docs check, publishes to npm with provenance, creates the GitHub release with generated notes, and moves the floating `v1` tag that `uses: adebayomoses/mcp-detector@v1` refers to.
 
 To publish by hand instead: `npm publish --access public` (the `prepack`/`prepublishOnly` scripts build and test first).
 

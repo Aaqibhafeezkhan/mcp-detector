@@ -1,0 +1,53 @@
+name: Rule proposal (a new check)
+description: Propose a new detection rule. Rules are the easiest way to contribute.
+title: "[Rule] "
+labels: ["rule proposal", "help wanted"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Good rules are **precise**: few false positives, clear evidence, an actionable fix.
+        If you can express it as text patterns, you can write it as a YAML community rule without touching the code
+        (see docs/community-rules.md). Proposing one here is still welcome.
+  - type: textarea
+    id: detects
+    attributes:
+      label: What would it detect?
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why does it matter?
+      description: What can go wrong for someone using a server that does this? A real-world example helps.
+    validations:
+      required: true
+  - type: textarea
+    id: examples
+    attributes:
+      label: Examples it must flag, and look-alikes it must not
+      description: At least one of each. Real text from tool descriptions or schemas is ideal (remove secrets).
+      render: text
+    validations:
+      required: true
+  - type: dropdown
+    id: severity
+    attributes:
+      label: How serious is it?
+      description: Critical and high fail CI builds, so they need to be precise.
+      options: [critical, high, medium, low, info]
+    validations:
+      required: true
+  - type: textarea
+    id: fix
+    attributes:
+      label: How should someone fix it?
+    validations:
+      required: true
+  - type: checkboxes
+    id: willing
+    attributes:
+      label: Would you like to implement it?
+      options:
+        - label: Yes, I can open a pull request (a YAML rule or a TypeScript rule).
+        - label: I would like help getting started.

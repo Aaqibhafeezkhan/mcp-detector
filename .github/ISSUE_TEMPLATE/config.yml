@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Question or idea (Discussions)
+    url: https://github.com/adebayomoses/mcp-detector/discussions
+    about: Ask how something works, or float an idea before opening an issue.
+  - name: Security problem in MCP Detector itself
+    url: https://github.com/adebayomoses/mcp-detector/security/advisories/new
+    about: Please report vulnerabilities privately here, not in a public issue. (A rule that is wrong about someone else's server is a normal issue.)
+  - name: Beginner guide
+    url: https://github.com/adebayomoses/mcp-detector/blob/main/docs/for-beginners.md
+    about: Step-by-step setup, troubleshooting and a glossary for people new to terminals.

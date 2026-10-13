@@ -1,5 +1,7 @@
-# Windows batch files must keep CRLF line endings; shell scripts must keep LF.
-*.bat text eol=crlf
-*.cmd text eol=crlf
-*.command text eol=lf
-*.sh text eol=lf
+# Launcher scripts must reach people byte-for-byte, including in GitHub's "Download ZIP":
+# a .bat needs CRLF line endings, a .command/.sh script needs LF.
+# "-text" tells git never to convert them, so the exact bytes committed are the bytes people get.
+*.bat -text
+*.cmd -text
+*.command -text
+*.sh -text

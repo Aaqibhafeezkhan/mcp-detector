@@ -1,0 +1,35 @@
+# Labels used by the issue templates and the good-first-issue drafts.
+# Create or update them all with:  bash scripts/setup-github.sh labels
+- name: good first issue
+  color: "7057ff"
+  description: A small, well-scoped task that is a good way to start contributing
+- name: help wanted
+  color: "008672"
+  description: Maintainers would welcome a contribution here
+- name: false positive
+  color: "fbca04"
+  description: A rule flagged something that is fine
+- name: missed detection
+  color: "d93f0b"
+  description: Something risky was not flagged
+- name: rule proposal
+  color: "0e8a16"
+  description: A proposal for a new detection rule
+- name: needs-triage
+  color: "ededed"
+  description: Not yet looked at by a maintainer
+- name: bug
+  color: "d73a4a"
+  description: Something is not working
+- name: enhancement
+  color: "a2eeef"
+  description: New feature or improvement
+- name: documentation
+  color: "0075ca"
+  description: Improvements or additions to documentation
+- name: security
+  color: "b60205"
+  description: Relates to the security of MCP Detector itself
+- name: platform
+  color: "c5def5"
+  description: Specific to Windows, macOS or Linux

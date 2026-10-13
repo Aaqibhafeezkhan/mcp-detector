@@ -31,7 +31,7 @@ fail() {
   echo
   echo "Something went wrong while preparing MCP Detector (see the messages above)."
   echo "Most often this is a problem with the internet connection. Check it and try again."
-  echo "If it keeps happening, please report it at https://github.com/adebayomoses/MCP-Doctor/issues and include the text above."
+  echo "If it keeps happening, please report it at https://github.com/adebayomoses/mcp-detector/issues and include the text above."
   pause; exit 1
 }
 

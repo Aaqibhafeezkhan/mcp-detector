@@ -1,0 +1,51 @@
+name: Missed detection (it did not flag something dangerous)
+description: A tool or server did something risky that MCP Detector did not report.
+title: "[Missed] "
+labels: ["missed detection", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Detection is heuristic, so misses are expected, and each one helps. **Please do not post a working exploit
+        against a real, unpatched server in public.** A harmless example of the same pattern is enough; if it is a
+        serious weakness in a specific product, tell its maintainers first.
+  - type: textarea
+    id: what
+    attributes:
+      label: What should have been reported?
+      description: Describe the risky behaviour in a sentence or two.
+    validations:
+      required: true
+  - type: textarea
+    id: definition
+    attributes:
+      label: A minimal tool definition (or server text) that shows it
+      description: Use a harmless stand-in. A tool name, description and input schema is usually enough.
+      render: json
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Which area is it?
+      options:
+        - Prompt injection / hidden instructions
+        - Tool poisoning or tool shadowing
+        - Secret exposure
+        - Dangerous permissions (shell, files, database, network)
+        - Command injection
+        - Rug pull (definitions changing)
+        - Schema or protocol problem
+        - Something else
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: MCP Detector version
+      placeholder: 0.1.0
+  - type: textarea
+    id: idea
+    attributes:
+      label: Idea for detecting it (optional)
+      description: A phrase, pattern, or schema feature that gives it away. If you can, write it as a YAML rule (see docs/community-rules.md).

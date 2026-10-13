@@ -7,8 +7,8 @@
 Requires Node.js 22.12 or newer. **From a clone (works today):**
 
 ```bash
-git clone https://github.com/adebayomoses/MCP-Doctor.git
-cd MCP-Doctor
+git clone https://github.com/adebayomoses/mcp-detector.git
+cd mcp-detector
 npm install
 npm run build
 npm link            # makes the `mcp-detector` command available everywhere

@@ -13,7 +13,7 @@ const BASH = process.platform === "win32" && existsSync(GIT_BASH) ? GIT_BASH : "
 const hasBash = spawnSync(BASH, ["-c", "true"]).status === 0;
 const fwd = (p: string) => p.replace(/\\/g, "/");
 
-const action = parse(readFileSync("github-action/action.yml", "utf8"));
+const action = parse(readFileSync("action.yml", "utf8"));
 const scanStep = action.runs.steps.find((s: any) => s.id === "scan");
 
 /** Run the action's `scan` step script locally, with `npx mcp-detector@x` mapped to this checkout. */

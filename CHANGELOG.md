@@ -25,5 +25,7 @@ All notable changes are documented here. Format based on [Keep a Changelog](http
 - `mcp-detector demo` and a first-run menu when `mcp-detector` is run with no arguments in an interactive terminal.
 - Plain-language explanations for connection failures (missing program, missing file, timeout, sign-in needed, unreachable address, wrong path) in the web app and in MCP-001 findings.
 - No-code onboarding: a plain-language guide (`docs/for-beginners.md`) with screenshots, double-click launchers (`start-app.bat`, `start-app.command`) that check Node.js, set up on first run and open the web app, and an `npm run app` shortcut. The README now leads with this path.
-- GitHub Action (`github-action/action.yml`) with job-summary report.
+- Community health: issue forms (bug, false positive, missed detection, rule proposal, feature), pull request template, label set and good-first-issue drafts with `scripts/setup-github.sh`.
+- Animated terminal demo (`docs/images/demo.svg`, generated from real output by `npm run docs:demo`) at the top of the README, and hand-written release notes used by the release workflow.
+- GitHub Action (`action.yml` at the repository root, so it can be listed on the GitHub Marketplace) with job-summary report.
 - Example servers (`examples/secure-server`, `examples/vulnerable-server`) and a test suite with stdio and HTTP integration tests.

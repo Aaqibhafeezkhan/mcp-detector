@@ -4,6 +4,14 @@
   "description": "Security, reliability, and quality scanner for Model Context Protocol (MCP) servers.",
   "type": "module",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adebayomoses/mcp-detector.git"
+  },
+  "homepage": "https://github.com/adebayomoses/mcp-detector#readme",
+  "bugs": {
+    "url": "https://github.com/adebayomoses/mcp-detector/issues"
+  },
   "bin": {
     "mcp-detector": "dist/cli/index.js"
   },
@@ -11,7 +19,6 @@
     "dist",
     "!dist/**/*.map",
     "demo",
-    "github-action",
     "docs",
     "README.md",
     "LICENSE",
@@ -28,7 +35,8 @@
     "docs:rules": "tsx scripts/gen-rules-doc.ts",
     "prepublishOnly": "npm run typecheck && npm test && npm run build",
     "prepack": "npm run build",
-    "app": "npm run build --silent && node dist/cli/index.js ui"
+    "app": "npm run build --silent && node dist/cli/index.js ui",
+    "docs:demo": "tsx scripts/make-demo-svg.ts"
   },
   "keywords": [
     "mcp",

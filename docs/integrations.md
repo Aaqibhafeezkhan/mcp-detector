@@ -17,7 +17,7 @@ jobs:
         with: { node-version: 22 }
       - run: npm ci && npm run build
 
-      - uses: mcp-detector/mcp-detector/github-action@v1
+      - uses: adebayomoses/mcp-detector@v1
         with:
           server-command: node build/index.js
           fail-on: high

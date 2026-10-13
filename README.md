@@ -5,6 +5,12 @@ Security, reliability, and quality scanner for [Model Context Protocol](https://
 
 > The ESLint + npm audit for MCP servers.
 
+<p align="center">
+  <img src="docs/images/demo.svg" alt="Animated terminal recording: running mcp-detector demo scans a deliberately unsafe example server, prints a score of 63 out of 100, and lists critical findings such as tool poisoning and dangerous shell access" width="860">
+</p>
+
+<sub>A real run of `mcp-detector demo` against a deliberately unsafe example server (regenerate with `npm run docs:demo`).</sub>
+
 ## Not technical? Start here
 
 AI assistants such as Claude can be given extra abilities by add-ons (called *MCP servers*). Some are well built, some are sloppy, and a few are dangerous. **MCP Detector checks one for you**: it gives it a score from 0 to 100, lists what it found, and explains how to fix each problem. It runs on your own computer and sends nothing anywhere.
@@ -30,8 +36,8 @@ Click **Scan the unsafe example** to see what a report looks like. It touches no
 > **Not on npm yet.** Until the first release, run it from a clone (below). The `npx mcp-detector …` and `npm install -g mcp-detector` forms in this README work once it is published.
 
 ```bash
-git clone https://github.com/adebayomoses/MCP-Doctor.git
-cd MCP-Doctor
+git clone https://github.com/adebayomoses/mcp-detector.git
+cd mcp-detector
 npm install
 npm run app                  # builds, then opens the web app
 npm run build && node dist/cli/index.js scan -- npx -y @modelcontextprotocol/server-everything
@@ -195,7 +201,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: npm ci && npm run build
-      - uses: mcp-detector/mcp-detector/github-action@v1
+      - uses: adebayomoses/mcp-detector@v1
         with:
           server-command: node build/index.js
           fail-on: high

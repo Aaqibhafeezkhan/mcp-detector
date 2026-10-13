@@ -1,0 +1,59 @@
+name: False positive (it flagged something that is fine)
+description: A rule reported a problem that is not a problem. These are the most valuable reports we get.
+title: "[False positive] MCP-0XX: "
+labels: ["false positive", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you. Every false positive becomes a test case so it cannot come back.
+        **Please do not paste real secrets, tokens or private URLs.** Replace them with placeholders.
+  - type: input
+    id: rule
+    attributes:
+      label: Rule ID
+      description: The `MCP-0XX` code shown on the finding.
+      placeholder: MCP-007
+    validations:
+      required: true
+  - type: textarea
+    id: finding
+    attributes:
+      label: The finding
+      description: Paste the finding as shown (message and evidence). `mcp-detector scan --verbose` shows both.
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: definition
+    attributes:
+      label: The tool definition that triggered it
+      description: |
+        The smallest tool definition (name, description, input schema) that reproduces it. For one tool you can get it with
+        `mcp-detector inspect --format json -- <your command>`. Trim it down to just what matters.
+      render: json
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why is this not a problem?
+      description: What does the tool actually do, and why is the finding wrong for it?
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: MCP Detector version
+      description: Output of `mcp-detector --version`.
+      placeholder: 0.1.0
+  - type: checkboxes
+    id: public
+    attributes:
+      label: Is the server public?
+      options:
+        - label: It is a public server, so the maintainers could look at it too (link below if so).
+  - type: input
+    id: link
+    attributes:
+      label: Link to the server or its source (optional)

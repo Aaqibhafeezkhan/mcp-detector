@@ -42,7 +42,7 @@ Not sure whether you already have it? Skip this step. The launcher in Step 3 che
 
 ## Step 2: Download MCP Detector
 
-1. Open **https://github.com/adebayomoses/MCP-Doctor**
+1. Open **https://github.com/adebayomoses/mcp-detector**
 2. Click the green **Code** button, then **Download ZIP**.
 3. Open your Downloads folder, right-click the ZIP file and choose **Extract All** (Mac: double-click it).
 4. Move the new folder somewhere you will find it again, for example Documents.
@@ -166,7 +166,7 @@ Add the sign-in header in the **Web address** tab.
 Open the **Terminal** app, type `bash ` (with a space after it), drag `start-app.command` into the Terminal window, and press **Enter**.
 
 **It still does not work**
-Please report it at https://github.com/adebayomoses/MCP-Doctor/issues. Copy the text from the text window into your message; it usually shows the cause.
+Please report it at https://github.com/adebayomoses/mcp-detector/issues. Copy the text from the text window into your message; it usually shows the cause.
 
 ## Words used in this guide
 

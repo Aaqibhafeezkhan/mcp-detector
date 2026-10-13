@@ -1,0 +1,61 @@
+name: Bug report
+description: "Something does not work: a crash, a wrong result, a broken page, or a launcher that fails."
+title: "[Bug] "
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. If a scan reports something you think is wrong about a server, use **False positive** instead.
+        **Please remove tokens, passwords and private URLs from anything you paste.**
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What you did, what you expected, and what you saw instead.
+    validations:
+      required: true
+  - type: dropdown
+    id: how
+    attributes:
+      label: How were you using it?
+      options:
+        - Web app (mcp-detector ui / start-app file)
+        - Command line (scan, inspect, ...)
+        - GitHub Action
+        - Batch scan / registry scan
+        - Library (import from "mcp-detector")
+        - Something else
+    validations:
+      required: true
+  - type: textarea
+    id: command
+    attributes:
+      label: The command or steps
+      description: The exact command, or the steps you clicked. Include flags.
+      render: shell
+  - type: textarea
+    id: output
+    attributes:
+      label: Output or error text
+      description: Copy everything shown, including the text window for the launchers.
+      render: text
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options: [Windows, macOS, Linux, Other]
+    validations:
+      required: true
+  - type: input
+    id: node
+    attributes:
+      label: Node.js version
+      description: Output of `node --version` (MCP Detector needs 22.12 or newer).
+      placeholder: v22.12.0
+  - type: input
+    id: version
+    attributes:
+      label: MCP Detector version
+      description: Output of `mcp-detector --version`, or the release you downloaded.
+      placeholder: 0.1.0

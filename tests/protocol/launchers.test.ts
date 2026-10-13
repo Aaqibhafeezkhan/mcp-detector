@@ -52,9 +52,12 @@ describe("start-app.command (macOS / Linux)", () => {
 });
 
 describe(".gitattributes", () => {
-  it("pins the line endings these files need", () => {
+  it("stores the launchers byte-for-byte so ZIP downloads keep the right line endings", () => {
+    // `text eol=crlf` would store LF in the repository, and GitHub's "Download ZIP" may deliver those bytes as-is.
+    // `-text` tells git never to convert, so the committed CRLF/LF is exactly what people receive.
     const t = readFileSync(".gitattributes", "utf8");
-    expect(t).toMatch(/\*\.bat\s+text\s+eol=crlf/);
-    expect(t).toMatch(/\*\.command\s+text\s+eol=lf/);
+    expect(t).toMatch(/^\*\.bat\s+-text/m);
+    expect(t).toMatch(/^\*\.command\s+-text/m);
+    expect(t).not.toMatch(/^\*\.bat\s+text/m);
   });
 });
