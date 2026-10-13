@@ -37,7 +37,8 @@ issues() {
   echo "Opening good-first-issue drafts..."
   for f in .github/good-first-issues/*.md; do
     title="$(sed -n '1s/^title: //p' "$f")"
-    labels="$(sed -n '2s/^labels: //p' "$f")"
+    # "a, b, c" -> "a,b,c": gh splits on commas and does not trim, so a space would become part of the label name.
+    labels="$(sed -n '2s/^labels: //p' "$f" | tr -d '\r' | sed -E 's/[[:space:]]*,[[:space:]]*/,/g; s/^[[:space:]]+//; s/[[:space:]]+$//')"
     if [ -z "$title" ]; then echo "  ! skipped $f (no title line)"; continue; fi
     if gh issue list --state all --search "in:title \"$title\"" --json title -q '.[].title' | grep -Fxq "$title"; then
       echo "  = already exists: $title"; continue
