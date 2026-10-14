@@ -3,8 +3,9 @@ import { CATEGORIES, type Category, type ScanResult, type Severity } from "../co
 import { SEVERITY_ICON, SEVERITY_LABEL } from "./severity.js";
 import { uniqueRecommendations } from "./recommendations.js";
 import { renderHtmlReport } from "./html.js";
+import { renderSarif } from "./sarif.js";
 
-export type ReportFormat = "terminal" | "json" | "markdown" | "html";
+export type ReportFormat = "terminal" | "json" | "markdown" | "html" | "sarif";
 
 export interface RenderOptions {
   verbose?: boolean;
@@ -37,6 +38,8 @@ export function renderReport(result: ScanResult, format: ReportFormat, opts: Ren
       return renderMarkdown(result);
     case "html":
       return renderHtmlReport(result);
+    case "sarif":
+      return renderSarif(result);
     default:
       return renderTerminal(result, opts);
   }
