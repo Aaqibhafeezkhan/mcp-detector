@@ -183,21 +183,21 @@ async function poll(id) {
     if (v.status !== "running") {
       if (lastStarted === id || !selected) show(id);
       $("scanStatus").textContent = v.result && v.result.status === "failed"
-        ? `Scan finished for ${r.label}, but the server could not be scanned. An explanation is available.`
-        : `Scan finished for ${r.label}. The report is available below.`;
+        ? "Scan finished for " + r.label + ", but the server could not be scanned. An explanation is available."
+        : "Scan finished for " + r.label + ". The report is available below.";
       loadRecent(); return;
     }
   }
 }
 
 async function startScan(label, body) {
-  $("scanStatus").textContent = `Starting scan for ${label}.`;
+  $("scanStatus").textContent = "Starting scan for " + label + ".";
   setBusy(true); clearFormError();
   try {
     const { id } = await api("/api/scan", body);
     runs.set(id, { label, view: { id, status: "running" } });
     lastStarted = id;
-    $("scanStatus").textContent = `Scan started for ${label}. Scanning in progress.`;
+    $("scanStatus").textContent = "Scan started for " + label + ". Scanning in progress.";
     renderRuns();
     poll(id);
   } catch (e) { formError(e.message); }
