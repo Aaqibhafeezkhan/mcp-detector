@@ -43,6 +43,7 @@ input[type=text],input[type=url],input[type=password]{width:100%;font:inherit;pa
 input:focus-visible,button:focus-visible,[role=tab]:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .check{display:flex;gap:10px;align-items:flex-start;font-weight:400;margin:14px 0 0}.check input{margin-top:5px;flex:none}
 .hdr{display:grid;grid-template-columns:1fr 1.4fr;gap:8px}
+@media(max-width:640px){.hdr{grid-template-columns:1fr}}
 button.primary{font:inherit;font-weight:600;background:var(--accent);color:var(--accent-fg);border:0;border-radius:8px;padding:11px 20px;margin-top:18px;cursor:pointer}
 button.primary:disabled{opacity:.5;cursor:not-allowed}
 button.link{font:inherit;background:none;border:0;color:var(--accent);padding:0;cursor:pointer;text-decoration:underline}
@@ -70,7 +71,7 @@ const el = (tag, props, ...kids) => {
   for (const c of kids) n.append(c);
   return n;
 };
-const colorFor = (s) => s >= 90 ? "#44cc11" : s >= 80 ? "#6fa300" : s >= 70 ? "#b88a00" : s >= 50 ? "#e8590c" : "#d6402c";
+const colorFor = (s) => s >= 90 ? "#2e7d32" : s >= 80 ? "#4f6f24" : s >= 70 ? "#806000" : s >= 50 ? "#a63d00" : "#b42318";
 
 let token = null;
 try { token = sessionStorage.getItem("mcpd"); } catch {}
@@ -105,11 +106,15 @@ function selectTab(name) {
     $("panel-" + t.dataset.tab).hidden = !on;
   }
 }
-tabs.forEach((t, i) => {
+tabs.forEach((t) => {
   t.addEventListener("click", () => selectTab(t.dataset.tab));
   t.addEventListener("keydown", (e) => {
-    if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
-    const next = tabs[(i + (e.key === "ArrowRight" ? 1 : tabs.length - 1)) % tabs.length];
+    if (!["ArrowRight", "ArrowLeft", "Home", "End"].includes(e.key)) return;
+    e.preventDefault();
+    const current = tabs.indexOf(t);
+    const nextIndex = e.key === "Home" ? 0 : e.key === "End" ? tabs.length - 1 :
+      (current + (e.key === "ArrowRight" ? 1 : tabs.length - 1)) % tabs.length;
+    const next = tabs[nextIndex];
     next.focus(); selectTab(next.dataset.tab);
   });
 });
@@ -175,16 +180,24 @@ async function poll(id) {
     let v;
     try { v = await api("/api/scan/" + id); } catch (e) { v = { id, status: "error", error: e.message, problem: { title: "Lost contact with the scanner.", hint: e.message } }; }
     const r = runs.get(id); r.view = v; renderRuns();
-    if (v.status !== "running") { if (lastStarted === id || !selected) show(id); loadRecent(); return; }
+    if (v.status !== "running") {
+      if (lastStarted === id || !selected) show(id);
+      $("scanStatus").textContent = v.result && v.result.status === "failed"
+        ? `Scan finished for ${r.label}, but the server could not be scanned. An explanation is available.`
+        : `Scan finished for ${r.label}. The report is available below.`;
+      loadRecent(); return;
+    }
   }
 }
 
 async function startScan(label, body) {
+  $("scanStatus").textContent = `Starting scan for ${label}.`;
   setBusy(true); clearFormError();
   try {
     const { id } = await api("/api/scan", body);
     runs.set(id, { label, view: { id, status: "running" } });
     lastStarted = id;
+    $("scanStatus").textContent = `Scan started for ${label}. Scanning in progress.`;
     renderRuns();
     poll(id);
   } catch (e) { formError(e.message); }
@@ -316,14 +329,15 @@ export function renderUiPage(nonce: string): string {
     <button role="tab" id="tab-installed" data-tab="installed" aria-selected="false" tabindex="-1" aria-controls="panel-installed" type="button">Servers I already use</button>
   </div>
   <div id="formError" class="err" role="alert" hidden></div>
+  <p id="scanStatus" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true"></p>
 
-  <div id="panel-demo" role="tabpanel" aria-labelledby="tab-demo">
+  <div id="panel-demo" role="tabpanel" aria-labelledby="tab-demo" tabindex="0">
     <p>New here? Scan one of our built-in example servers to see what a report looks like. Nothing on your computer is touched.</p>
     <button class="primary" id="demoVuln" type="button">Scan the unsafe example</button>
     <button class="primary" id="demoOk" type="button" style="margin-left:8px">Scan the well-built example</button>
   </div>
 
-  <form id="panel-command" role="tabpanel" aria-labelledby="tab-command" hidden>
+  <form id="panel-command" role="tabpanel" aria-labelledby="tab-command" tabindex="0" hidden>
     <label for="cmd">Command that starts the server</label>
     <input id="cmd" type="text" placeholder="npx -y @modelcontextprotocol/server-everything" autocomplete="off" spellcheck="false">
     <p class="muted small">Exactly what you would type in a terminal to start your MCP server.</p>
@@ -332,7 +346,7 @@ export function renderUiPage(nonce: string): string {
     <button class="primary" id="cmdGo" type="submit" disabled>Scan</button>
   </form>
 
-  <form id="panel-url" role="tabpanel" aria-labelledby="tab-url" hidden>
+  <form id="panel-url" role="tabpanel" aria-labelledby="tab-url" tabindex="0" hidden>
     <label for="url">Server address</label>
     <input id="url" type="url" placeholder="https://example.com/mcp" autocomplete="off" spellcheck="false">
     <label>Sign-in header <span class="muted">(only if the server needs one)</span></label>
@@ -342,7 +356,7 @@ export function renderUiPage(nonce: string): string {
     <button class="primary" id="urlGo" type="submit">Scan</button>
   </form>
 
-  <form id="panel-installed" role="tabpanel" aria-labelledby="tab-installed" hidden>
+  <form id="panel-installed" role="tabpanel" aria-labelledby="tab-installed" tabindex="0" hidden>
     <p id="noClients" class="muted" hidden>No MCP apps with configured servers were found on this computer (looked for Claude Desktop, Cursor, VS Code, Windsurf and Claude Code).</p>
     <div id="clientBox" hidden>
       <p>These servers are set up in your MCP apps:</p>

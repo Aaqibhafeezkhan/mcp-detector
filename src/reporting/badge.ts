@@ -5,11 +5,11 @@ const esc = (s: string) =>
 
 /** Same thresholds as the grade names so a badge and a report never disagree. */
 export function scoreColor(score: number): string {
-  if (score >= 90) return "#44cc11";
-  if (score >= 80) return "#97ca00";
-  if (score >= 70) return "#dfb317";
-  if (score >= 50) return "#fe7d37";
-  return "#e05d44";
+  if (score >= 90) return "#2e7d32";
+  if (score >= 80) return "#4f6f24";
+  if (score >= 70) return "#806000";
+  if (score >= 50) return "#a63d00";
+  return "#b42318";
 }
 
 /** Rough text width for Verdana 11px, good enough for a stable badge layout. */

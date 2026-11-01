@@ -16,7 +16,7 @@ export const esc = (s: unknown): string =>
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#39;");
 
-const SEV_COLOR: Record<Severity, string> = { critical: "#c62828", high: "#e65100", medium: "#b28900", low: "#1565c0", info: "#6b7280" };
+const SEV_COLOR: Record<Severity, string> = { critical: "#b42318", high: "#b54708", medium: "#806000", low: "#175cd3", info: "#475467" };
 const CAT_LABEL: Record<Category, string> = { protocol: "Protocol", security: "Security", tools: "Tools", schema: "Schema", performance: "Performance", quality: "Quality" };
 
 const CSP = "default-src 'none'; style-src 'unsafe-inline'; img-src 'self' data:; base-uri 'none'; form-action 'none'";
