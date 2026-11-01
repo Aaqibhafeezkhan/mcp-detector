@@ -24,7 +24,7 @@ const hostile = () =>
 
 describe("badge", () => {
   it("uses the grade thresholds for colours", () => {
-    expect([95, 85, 75, 60, 10].map(scoreColor)).toEqual(["#44cc11", "#97ca00", "#dfb317", "#fe7d37", "#e05d44"]);
+    expect([95, 85, 75, 60, 10].map(scoreColor)).toEqual(["#2e7d32", "#4f6f24", "#806000", "#a63d00", "#b42318"]);
   });
   it("renders an accessible SVG showing a score, never the word 'safe'", () => {
     const r = evaluate(makeSnapshot({ tools: [tool("a")] }), cfg()).result;
@@ -44,7 +44,7 @@ describe("badge", () => {
   });
   it("emits a shields.io endpoint document", () => {
     const j = shieldsEndpoint(evaluate(makeSnapshot(), cfg()).result);
-    expect(j).toEqual({ schemaVersion: 1, label: "mcp-detector", message: "100/100", color: "44cc11" });
+    expect(j).toEqual({ schemaVersion: 1, label: "mcp-detector", message: "100/100", color: "2e7d32" });
   });
 });
 
