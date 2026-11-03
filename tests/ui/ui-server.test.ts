@@ -96,9 +96,10 @@ describe("the page", () => {
     expect(r.text).toContain('id="scanStatus" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true"');
     expect(r.text).toContain('["ArrowRight", "ArrowLeft", "Home", "End"]');
     expect(r.text).toContain('"Home", "End"');
-    expect(r.text).toContain('tabindex="0"');
+    expect(r.text).not.toMatch(/role="tabpanel"[^>]*tabindex=/);
     expect(r.text).toContain('Scan started for');
     expect(r.text).toContain('Scan finished for');
+    expect(r.text).toContain('Could not start scan for');
   });
   it("uses a fresh nonce for every response", async () => {
     const a = String((await call(ui.port)).headers["content-security-policy"]);

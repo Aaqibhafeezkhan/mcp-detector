@@ -22,8 +22,8 @@ const CAT_LABEL: Record<Category, string> = { protocol: "Protocol", security: "S
 const CSP = "default-src 'none'; style-src 'unsafe-inline'; img-src 'self' data:; base-uri 'none'; form-action 'none'";
 
 const CSS = `
-:root{--bg:#fff;--fg:#1a1a1a;--muted:#5f6670;--card:#f6f7f9;--line:#e1e4e8;--accent:#2457d6}
-@media (prefers-color-scheme:dark){:root{--bg:#14161a;--fg:#e8eaed;--muted:#9aa3ad;--card:#1d2026;--line:#2f343c;--accent:#7aa2ff}}
+:root{--bg:#fff;--fg:#1a1a1a;--muted:#5f6670;--card:#f6f7f9;--line:#e1e4e8;--accent:#2457d6;--score-90:#2e7d32;--score-80:#4f6f24;--score-70:#806000;--score-50:#a63d00;--score-low:#b42318}
+@media (prefers-color-scheme:dark){:root{--bg:#14161a;--fg:#e8eaed;--muted:#9aa3ad;--card:#1d2026;--line:#2f343c;--accent:#7aa2ff;--score-90:#56d364;--score-80:#a3d977;--score-70:#f2cc60;--score-50:#ff9b62;--score-low:#ff7b72}}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
 main{max-width:980px;margin:0 auto;padding:24px 16px 64px}h1{font-size:22px;margin:0 0 4px}h2{font-size:17px;margin:32px 0 12px}
 a{color:var(--accent)}.muted{color:var(--muted)}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px}
@@ -49,10 +49,18 @@ function page(title: string, body: string): string {
 `;
 }
 
+function scoreGraphicColor(score: number): string {
+  if (score >= 90) return "var(--score-90)";
+  if (score >= 80) return "var(--score-80)";
+  if (score >= 70) return "var(--score-70)";
+  if (score >= 50) return "var(--score-50)";
+  return "var(--score-low)";
+}
+
 function ring(score: number, size = 120): string {
   const r = 50;
   const c = 2 * Math.PI * r;
-  const col = scoreColor(score);
+  const col = scoreGraphicColor(score);
   return `<svg class="ring" width="${size}" height="${size}" viewBox="0 0 120 120" role="img" aria-label="Score ${score} out of 100"><circle cx="60" cy="60" r="${r}" fill="none" stroke="var(--line)" stroke-width="10"/><circle cx="60" cy="60" r="${r}" fill="none" stroke="${col}" stroke-width="10" stroke-linecap="round" stroke-dasharray="${((score / 100) * c).toFixed(1)} ${c.toFixed(1)}" transform="rotate(-90 60 60)"/><text x="60" y="66" text-anchor="middle" font-size="28" font-weight="700" fill="currentColor">${score}</text></svg>`;
 }
 
@@ -67,7 +75,7 @@ function findingHtml(f: Finding): string {
 export function reportBody(r: ScanResult, extra = ""): string {
   const name = r.server?.name ? `${r.server.name}${r.server.version ? ` v${r.server.version}` : ""}` : r.target;
   const bars = CATEGORIES.map(
-    (c) => `<div class="cat"><span>${CAT_LABEL[c]}</span><div class="bar"><i style="width:${r.scores[c]}%;background:${scoreColor(r.scores[c])}"></i></div><b>${r.scores[c]}</b></div>`,
+    (c) => `<div class="cat"><span>${CAT_LABEL[c]}</span><div class="bar"><i style="width:${r.scores[c]}%;background:${scoreGraphicColor(r.scores[c])}"></i></div><b>${r.scores[c]}</b></div>`,
   ).join("");
   const t = r.timings;
   const perf = [

@@ -200,7 +200,10 @@ async function startScan(label, body) {
     $("scanStatus").textContent = "Scan started for " + label + ". Scanning in progress.";
     renderRuns();
     poll(id);
-  } catch (e) { formError(e.message); }
+  } catch (e) {
+    $("scanStatus").textContent = "Could not start scan for " + label + ". " + e.message;
+    formError(e.message);
+  }
   finally { setBusy(false); }
 }
 function setBusy(b) { document.querySelectorAll("button.primary").forEach((x) => { x.dataset.busy = b ? "1" : ""; refreshButtons(); }); }
@@ -331,13 +334,13 @@ export function renderUiPage(nonce: string): string {
   <div id="formError" class="err" role="alert" hidden></div>
   <p id="scanStatus" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true"></p>
 
-  <div id="panel-demo" role="tabpanel" aria-labelledby="tab-demo" tabindex="0">
+  <div id="panel-demo" role="tabpanel" aria-labelledby="tab-demo">
     <p>New here? Scan one of our built-in example servers to see what a report looks like. Nothing on your computer is touched.</p>
     <button class="primary" id="demoVuln" type="button">Scan the unsafe example</button>
     <button class="primary" id="demoOk" type="button" style="margin-left:8px">Scan the well-built example</button>
   </div>
 
-  <form id="panel-command" role="tabpanel" aria-labelledby="tab-command" tabindex="0" hidden>
+  <form id="panel-command" role="tabpanel" aria-labelledby="tab-command" hidden>
     <label for="cmd">Command that starts the server</label>
     <input id="cmd" type="text" placeholder="npx -y @modelcontextprotocol/server-everything" autocomplete="off" spellcheck="false">
     <p class="muted small">Exactly what you would type in a terminal to start your MCP server.</p>
@@ -346,7 +349,7 @@ export function renderUiPage(nonce: string): string {
     <button class="primary" id="cmdGo" type="submit" disabled>Scan</button>
   </form>
 
-  <form id="panel-url" role="tabpanel" aria-labelledby="tab-url" tabindex="0" hidden>
+  <form id="panel-url" role="tabpanel" aria-labelledby="tab-url" hidden>
     <label for="url">Server address</label>
     <input id="url" type="url" placeholder="https://example.com/mcp" autocomplete="off" spellcheck="false">
     <label>Sign-in header <span class="muted">(only if the server needs one)</span></label>
@@ -356,7 +359,7 @@ export function renderUiPage(nonce: string): string {
     <button class="primary" id="urlGo" type="submit">Scan</button>
   </form>
 
-  <form id="panel-installed" role="tabpanel" aria-labelledby="tab-installed" tabindex="0" hidden>
+  <form id="panel-installed" role="tabpanel" aria-labelledby="tab-installed" hidden>
     <p id="noClients" class="muted" hidden>No MCP apps with configured servers were found on this computer (looked for Claude Desktop, Cursor, VS Code, Windsurf and Claude Code).</p>
     <div id="clientBox" hidden>
       <p>These servers are set up in your MCP apps:</p>
