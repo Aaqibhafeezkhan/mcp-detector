@@ -24,7 +24,7 @@ const hostile = () =>
 
 describe("badge", () => {
   it("uses the grade thresholds for colours", () => {
-    expect([95, 85, 75, 60, 10].map(scoreColor)).toEqual(["#44cc11", "#97ca00", "#dfb317", "#fe7d37", "#e05d44"]);
+    expect([95, 85, 75, 60, 10].map(scoreColor)).toEqual(["#2e7d32", "#4f6f24", "#806000", "#a63d00", "#b42318"]);
   });
   it("renders an accessible SVG showing a score, never the word 'safe'", () => {
     const r = evaluate(makeSnapshot({ tools: [tool("a")] }), cfg()).result;
@@ -44,12 +44,18 @@ describe("badge", () => {
   });
   it("emits a shields.io endpoint document", () => {
     const j = shieldsEndpoint(evaluate(makeSnapshot(), cfg()).result);
-    expect(j).toEqual({ schemaVersion: 1, label: "mcp-detector", message: "100/100", color: "44cc11" });
+    expect(j).toEqual({ schemaVersion: 1, label: "mcp-detector", message: "100/100", color: "2e7d32" });
   });
 });
 
 describe("HTML report from a hostile server", () => {
   const html = renderHtmlReport(hostile());
+  it("uses lighter score colours for report graphics in dark mode", () => {
+    const report = renderHtmlReport(good());
+    expect(report).toContain("--score-90:#56d364");
+    expect(report).toContain("stroke=\"var(--score-90)\"");
+    expect(report).toContain("background:var(--score-90)");
+  });
   it("contains no executable markup: server-supplied text is escaped everywhere", () => {
     expect(html).not.toMatch(/<script/i);
     expect(html).not.toContain("<img src=x");
